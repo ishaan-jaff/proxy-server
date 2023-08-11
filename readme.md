@@ -9,11 +9,11 @@
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/_YF4Qj?referralCode=t3ukrU)
 
 # What does this Repo do
-- One server to make requests to all your LLM APIs: Azure, OpenAI, Replicate, Hugging Face. Support for 50+ models
-- Consistent Input/Output Format
-- Error Handling Using Model Fallbacks (if `GPT-4` fails, try `llama2`)
-- Logging - Log Requests, Responses and Errors to Supabase, Posthog, Mixpanel, Sentry, Helicone (Any of the supported providers)
-- Caching - Implementation of Semantic Caching
+- One server to make requests to all your LLM APIs: **Azure, OpenAI, Replicate, Anthropic, Hugging Face.** Support for 50+ models
+- **Consistent Input/Output** Format
+- **Error Handling** Using Model Fallbacks (if `GPT-4` fails, try `llama2`)
+- **Logging** - Log Requests, Responses and Errors to Supabase, Posthog, Mixpanel, Sentry, Helicone (Any of the supported providers)
+- **Caching** - Implementation of Semantic Caching
 
 
 ## API Endpoints
