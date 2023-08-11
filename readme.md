@@ -9,13 +9,14 @@
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/_YF4Qj?referralCode=t3ukrU)
 
 # What does liteLLM proxy do
-- One server to make requests to all your LLM APIs: **Azure, OpenAI, Replicate, Anthropic, Hugging Face.** Support for 50+ models
+- Make `/chat/completions` requests for 50+ LLM models **Azure, OpenAI, Replicate, Anthropic, Hugging Face**
 - **Consistent Input/Output** Format
+    - Call all models using the OpenAI format - completion(model, messages)
+    - Text responses will always be available at ['choices'][0]['message']['content']
 - **Error Handling** Using Model Fallbacks (if `GPT-4` fails, try `llama2`)
-- **Logging** - Log Requests, Responses and Errors to Supabase, Posthog, Mixpanel, Sentry, Helicone (Any of the supported providers)
+- **Logging** - Log Requests, Responses and Errors to `Supabase`, `Posthog`, `Mixpanel`, `Sentry`, `Helicone` (Any of the supported providers here: https://litellm.readthedocs.io/en/latest/advanced/
 - **Token Usage & Spend** - Track Input + Completion tokens used + Spend/model
 - **Caching** - Implementation of Semantic Caching
-- **Key Management** - One Server for all your API Keys (use a `.env` or a secret manager here)
 - **Streaming & Async Support** - Return generators to stream text responses
 
 
@@ -27,16 +28,29 @@ This endpoint is used to generate chat completions for 50+ support LLM API Model
 
 #### Input
 This API endpoint accepts all inputs in raw JSON and expects the following inputs
-- `model` (string, required): ID of the model to use for chat completions. Refer to the model endpoint compatibility table for supported models.
+- `model` (string, required): ID of the model to use for chat completions. See all supported models [here]: (https://litellm.readthedocs.io/en/latest/supported/): 
  eg `gpt-3.5-turbo`, `gpt-4`, `claude-2`, `command-nightly`, `stabilityai/stablecode-completion-alpha-3b-4k`
 - `messages` (array, required): A list of messages representing the conversation context. Each message should have a `role` (system, user, assistant, or function), `content` (message text), and `name` (for function role).
 - Additional Optional parameters: `temperature`, `functions`, `function_call`, `top_p`, `n`, `stream`. See the full list of supported inputs here: https://litellm.readthedocs.io/en/latest/input/
 
 
-##### example json
-```
+#### Example json body
+```json
+# for claude-2
 {
-    "model": "gpt-3.5-turbo",
+    "model": "claude-2",
+    "messages": [
+                    { 
+                        "content": "Hello, whats the weather in San Francisco??",
+                        "role": "user"
+                    }
+                ]
+    
+}
+
+# for llama-2
+{
+    "model": "replicate/llama-2-70b-chat:2c1608e18606fad2812020dc541930f2d0495ce32eee50074220b87300bc16e1",
     "messages": [
                     { 
                         "content": "Hello, whats the weather in San Francisco??",
@@ -47,7 +61,7 @@ This API endpoint accepts all inputs in raw JSON and expects the following input
 }
 ```
 
-#### Making an API request
+### Making an API request to the Proxy Server
 ```python
 import requests
 import json
@@ -75,7 +89,7 @@ print(response.text)
 ### Output [Response Format]
 Responses from the server are given in the following format. 
 All responses from the server are returned in the following format (for all LLM models)
-```
+```json
 {
     "choices": [
         {
@@ -100,32 +114,6 @@ All responses from the server are returned in the following format (for all LLM 
 ```
 
 
-### Supported models
-
-OpenAI Chat Completion Models:
-gpt-4
-gpt-4-0613
-gpt-4-32k
-
-OpenAI Text Completion Models:
-text-davinci-003
-Cohere Models:
-command-nightly
-command
-...
-Anthropic Models:
-claude-2
-claude-instant-1
-...
-Replicate Models:
-replicate/
-OpenRouter Models:
-google/palm-2-codechat-bison
-google/palm-2-chat-bison
-...
-Vertex Models:
-chat-bison
-chat-bison@001
 
 
 
