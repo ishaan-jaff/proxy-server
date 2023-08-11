@@ -27,7 +27,7 @@ def api_completion():
     data = request.json
     try:
         # pass in data to completion function, unpack data
-        response = completion(**data) 
+        response = completion(**data)
     except Exception as e:
         # call handle_error function
         return handle_error(data)
