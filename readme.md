@@ -10,6 +10,19 @@
 
 # What does liteLLM proxy do
 - Make `/chat/completions` requests for 50+ LLM models **Azure, OpenAI, Replicate, Anthropic, Hugging Face**
+  
+  Example: for `model` use `claude-2`, `gpt-3.5`, `gpt-4`, `command-nightly`, `stabilityai/stablecode-completion-alpha-3b-4k`
+  ```json
+  {
+    "model": "replicate/llama-2-70b-chat:2c1608e18606fad2812020dc541930f2d0495ce32eee50074220b87300bc16e1",
+    "messages": [
+                    { 
+                        "content": "Hello, whats the weather in San Francisco??",
+                        "role": "user"
+                    }
+                ]
+  }
+  ```
 - **Consistent Input/Output** Format
     - Call all models using the OpenAI format - completion(model, messages)
     - Text responses will always be available at ['choices'][0]['message']['content']
@@ -34,23 +47,11 @@ This API endpoint accepts all inputs in raw JSON and expects the following input
 - Additional Optional parameters: `temperature`, `functions`, `function_call`, `top_p`, `n`, `stream`. See the full list of supported inputs here: https://litellm.readthedocs.io/en/latest/input/
 
 
-#### Example json body
+#### Example JSON body
+For claude-2
 ```json
-# for claude-2
 {
     "model": "claude-2",
-    "messages": [
-                    { 
-                        "content": "Hello, whats the weather in San Francisco??",
-                        "role": "user"
-                    }
-                ]
-    
-}
-
-# for llama-2
-{
-    "model": "replicate/llama-2-70b-chat:2c1608e18606fad2812020dc541930f2d0495ce32eee50074220b87300bc16e1",
     "messages": [
                     { 
                         "content": "Hello, whats the weather in San Francisco??",
@@ -88,7 +89,7 @@ print(response.text)
 
 ### Output [Response Format]
 Responses from the server are given in the following format. 
-All responses from the server are returned in the following format (for all LLM models)
+All responses from the server are returned in the following format (for all LLM models). More info on output here: https://litellm.readthedocs.io/en/latest/output/
 ```json
 {
     "choices": [
