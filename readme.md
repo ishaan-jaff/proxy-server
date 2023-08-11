@@ -8,7 +8,7 @@
 
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/_YF4Qj?referralCode=t3ukrU)
 
-# What does this Repo do
+# What does liteLLM proxy do
 - One server to make requests to all your LLM APIs: **Azure, OpenAI, Replicate, Anthropic, Hugging Face.** Support for 50+ models
 - **Consistent Input/Output** Format
 - **Error Handling** Using Model Fallbacks (if `GPT-4` fails, try `llama2`)
