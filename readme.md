@@ -1,5 +1,6 @@
 
-# Proxy Server for Azure, Llama2, OpenAI, Claude, Hugging Face, Replicate Models
+# liteLLM Proxy Server: 50+ LLM Models, Error Handling, Caching
+### Azure, Llama2, OpenAI, Claude, Hugging Face, Replicate Models
 [![PyPI Version](https://img.shields.io/pypi/v/litellm.svg)](https://pypi.org/project/litellm/)
 [![PyPI Version](https://img.shields.io/badge/stable%20version-v0.1.345-blue?color=green&link=https://pypi.org/project/litellm/0.1.1/)](https://pypi.org/project/litellm/0.1.1/)
 ![Downloads](https://img.shields.io/pypi/dm/litellm)
@@ -7,36 +8,12 @@
 
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/_YF4Qj?referralCode=t3ukrU)
 
-# Proxy Server for Chat API
-
-
-This repository contains a proxy server that interacts with OpenAI's Chat API and other similar APIs to facilitate chat-based language models. The server allows you to easily integrate chat completion capabilities into your applications. The server is built using Python and the Flask framework.
-
-
-# Proxy Server for Chat API
-
-This repository contains a proxy server that interacts with OpenAI's Chat API and other similar APIs to facilitate chat-based language models. The server allows you to easily integrate chat completion capabilities into your applications. The server is built using Python and the Flask framework.
-
-## Installation
-
-
-## Installation
-
-
-To set up and run the proxy server locally, follow these steps:
-
-1. Clone this repository to your local machine:
-
-
-2. Install the required dependencies using pip:
-
-`pip install -r requirements.txt`
-
-3. Configure the server settings, such as API keys and model endpoints, in the configuration file (`config.py`).
-
-4. Run the server:
-
-`python app.py`
+# What does this Repo do
+- One server to make requests to all your LLM APIs: Azure, OpenAI, Replicate, Hugging Face. Support for 50+ models
+- Consistent Input/Output Format
+- Error Handling Using Model Fallbacks (if `GPT-4` fails, try `llama2`)
+- Logging - Log Requests, Responses and Errors to Supabase, Posthog, Mixpanel, Sentry, Helicone (Any of the supported providers)
+- Caching - Implementation of Semantic Caching
 
 
 ## API Endpoints
