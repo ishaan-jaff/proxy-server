@@ -13,52 +13,100 @@
 - **Consistent Input/Output** Format
 - **Error Handling** Using Model Fallbacks (if `GPT-4` fails, try `llama2`)
 - **Logging** - Log Requests, Responses and Errors to Supabase, Posthog, Mixpanel, Sentry, Helicone (Any of the supported providers)
+- **Token Usage & Spend** - Track Input + Completion tokens used + Spend/model
 - **Caching** - Implementation of Semantic Caching
+- **Key Management** - One Server for all your API Keys (use a `.env` or a secret manager here)
+- **Streaming & Async Support** - Return generators to stream text responses
 
 
 ## API Endpoints
 
 ### `/chat/completions` (POST)
 
-This endpoint is used to generate chat completions. It takes in JSON data with the following parameters:
+This endpoint is used to generate chat completions for 50+ support LLM API Models. Use llama2, GPT-4, Claude2 etc
 
+#### Input
+This API endpoint accepts all inputs in raw JSON and expects the following inputs
 - `model` (string, required): ID of the model to use for chat completions. Refer to the model endpoint compatibility table for supported models.
+ eg `gpt-3.5-turbo`, `gpt-4`, `claude-2`, `command-nightly`, `stabilityai/stablecode-completion-alpha-3b-4k`
 - `messages` (array, required): A list of messages representing the conversation context. Each message should have a `role` (system, user, assistant, or function), `content` (message text), and `name` (for function role).
-- Additional parameters for controlling completions, such as `temperature`, `top_p`, `n`, etc.
+- Additional Optional parameters: `temperature`, `functions`, `function_call`, `top_p`, `n`, `stream`. See the full list of supported inputs here: https://litellm.readthedocs.io/en/latest/input/
 
-Example JSON payload:
 
-```json
+##### example json
+```
 {
-"model": "gpt-3.5-turbo",
-"messages": [
- {"role": "system", "content": "You are a helpful assistant."},
- {"role": "user", "content": "Knock knock."},
- {"role": "assistant", "content": "Who's there?"},
- {"role": "user", "content": "Orange."}
-],
-"temperature": 0.8
+    "model": "gpt-3.5-turbo",
+    "messages": [
+                    { 
+                        "content": "Hello, whats the weather in San Francisco??",
+                        "role": "user"
+                    }
+                ]
+    
+}
+```
+
+#### Making an API request
+```python
+import requests
+import json
+
+# TODO: use your URL 
+url = "http://localhost:5000/chat/completions"
+
+payload = json.dumps({
+  "model": "gpt-3.5-turbo",
+  "messages": [
+    {
+      "content": "Hello, whats the weather in San Francisco??",
+      "role": "user"
+    }
+  ]
+})
+headers = {
+  'Content-Type': 'application/json'
+}
+response = requests.request("POST", url, headers=headers, data=payload)
+print(response.text)
+
+```
+
+### Output [Response Format]
+Responses from the server are given in the following format. 
+All responses from the server are returned in the following format (for all LLM models)
+```
+{
+    "choices": [
+        {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+                "content": "I'm sorry, but I don't have the capability to provide real-time weather information. However, you can easily check the weather in San Francisco by searching online or using a weather app on your phone.",
+                "role": "assistant"
+            }
+        }
+    ],
+    "created": 1691790381,
+    "id": "chatcmpl-7mUFZlOEgdohHRDx2UpYPRTejirzb",
+    "model": "gpt-3.5-turbo-0613",
+    "object": "chat.completion",
+    "usage": {
+        "completion_tokens": 41,
+        "prompt_tokens": 16,
+        "total_tokens": 57
+    }
 }
 ```
 
 
-## Input Parameters
-model: ID of the language model to use.
-messages: An array of messages representing the conversation context.
-role: The role of the message author (system, user, assistant, or function).
-content: The content of the message.
-name: The name of the author (required for function role).
-function_call: The name and arguments of a function to call.
-functions: A list of functions the model may generate JSON inputs for.
-Various other parameters for controlling completion behavior.
-Supported Models
-The proxy server supports the following models:
+### Supported models
 
 OpenAI Chat Completion Models:
 gpt-4
 gpt-4-0613
 gpt-4-32k
-...
+
 OpenAI Text Completion Models:
 text-davinci-003
 Cohere Models:
@@ -79,7 +127,5 @@ Vertex Models:
 chat-bison
 chat-bison@001
 
-Refer to the model endpoint compatibility table for more details.
 
-Refer to the model endpoint compatibility table for more details.
 
